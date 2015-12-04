@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">LocationSample</string>
+    <string name="locator_url">https://locator-app.com/api/v1</string>
+</resources>

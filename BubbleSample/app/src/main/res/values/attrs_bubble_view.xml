@@ -2,5 +2,8 @@
     <declare-styleable name="BubbleView">
         <attr name="bubbleRadius" format="integer" />
         <attr name="bubbleColor" format="color" />
+        <attr name="bubbleColorWidth" format="integer" />
+        <attr name="shadowWidth" format="integer" />
+        <attr name="shadowColor" format="color" />
     </declare-styleable>
 </resources>

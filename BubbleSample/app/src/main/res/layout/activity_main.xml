@@ -12,6 +12,8 @@
         android:layout_height="200dp"
         android:id="@+id/bubble"
         custom:bubbleColor="#ff349f28"
+        custom:shadowWidth="2"
+        custom:bubbleColorWidth="5"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="false"
         android:layout_alignParentEnd="false" />

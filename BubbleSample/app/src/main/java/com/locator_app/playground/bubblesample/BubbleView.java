@@ -2,16 +2,25 @@ package com.locator_app.playground.bubblesample;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.util.AttributeSet;
 import android.view.View;
 
 public class BubbleView extends View {
 
-    private Paint circlePaint;
+
     private final static int NOT_INITIALIZED = -1;
     private int radius = NOT_INITIALIZED;
+    private Paint circlePaint;
+    private int bubbleColorWidth = 5;
+    private Paint shadowPaint;
+    private int shadowWidth = 2;
+    private Bitmap bitmap;
+    private Point virtualCenter;
 
     public BubbleView(Context context, int radius) {
         this(context, null);
@@ -28,19 +37,39 @@ public class BubbleView extends View {
         TypedArray a = context.getTheme()
                               .obtainStyledAttributes(attrs, R.styleable.BubbleView, 0, 0);
 
-
+        int circleColor = a.getColor(R.styleable.BubbleView_bubbleColor, 0xff00ff);
         circlePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         circlePaint.setStyle(Paint.Style.FILL);
-
-        int circleColor = a.getColor(R.styleable.BubbleView_bubbleColor, 0xff00ff);
         circlePaint.setColor(circleColor);
+
+        shadowPaint = new Paint(0);
+        shadowPaint.setColor(0x77eeccee);
+        shadowPaint.setMaskFilter(new BlurMaskFilter(8, BlurMaskFilter.Blur.NORMAL));
+        this.shadowWidth = a.getInteger(R.styleable.BubbleView_shadowWidth, 0);
+        
+        virtualCenter = new Point();
     }
 
     public void moveTo(float x, float y) {
         setX(x - radius);
         setY(y - radius);
-
         requestLayout();
+    }
+
+    public Point getCenter() {
+        return new Point((int)getX() + radius, (int)getY() + radius);
+    }
+
+    public void moveVirtual(int x, int y) {
+        virtualCenter.set(x, y);
+    }
+
+    public void moveToVirtualCenter() {
+        moveTo(virtualCenter.x, virtualCenter.y);
+    }
+
+    public Point getVirtualCenter() {
+        return virtualCenter;
     }
 
     public void setRadius(int radius) {
@@ -48,10 +77,16 @@ public class BubbleView extends View {
         float y = getY() + this.radius;
 
         this.radius = radius;
-        getLayoutParams().width = radius * 2;
-        getLayoutParams().height = radius * 2;
+        if (getLayoutParams() != null) {
+            getLayoutParams().width = radius * 2;
+            getLayoutParams().height = radius * 2;
+        }
 
         moveTo(x, y);
+    }
+
+    public int getRadius() {
+        return radius;
     }
 
     @Override
@@ -62,36 +97,34 @@ public class BubbleView extends View {
         }
     }
 
-    public int getRadius() {
-        return radius;
-    }
-
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
-        canvas.drawCircle(getWidth() / 2, getHeight() / 2, radius, circlePaint);
+        drawShadow(canvas);
+        drawBubble(canvas);
+        drawBitmap(canvas);
     }
 
-//    public static Bitmap getRoundedCornerBitmap(Bitmap bitmap, int pixels) {
-//        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap
-//                .getHeight(), Config.ARGB_8888);
-//        Canvas canvas = new Canvas(output);
-//
-//        final int color = 0xff424242;
-//        final Paint paint = new Paint();
-//        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-//        final RectF rectF = new RectF(rect);
-//        final float roundPx = pixels;
-//
-//        paint.setAntiAlias(true);
-//        canvas.drawARGB(0, 0, 0, 0);
-//        paint.setColor(color);
-//        canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
-//
-//        paint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));
-//        canvas.drawBitmap(bitmap, rect, rect, paint);
-//
-//        return output;
-//    }
+    private void drawShadow(Canvas canvas) {
+        if (shadowWidth > 0) {
+            canvas.drawCircle(getWidth() / 2, getHeight() / 2, radius, shadowPaint);
+        }
+    }
+
+    private void drawBubble(Canvas canvas) {
+        canvas.drawCircle(getWidth() / 2, getHeight() / 2, radius - shadowWidth, circlePaint);
+    }
+
+    private void drawBitmap(Canvas canvas) {
+        if (bitmap == null) {
+            loadImage();
+        }
+        if (bitmap != null) {
+            canvas.drawBitmap(bitmap, 0, 0, circlePaint);
+        }
+    }
+
+    private void loadImage() {
+        
+    }
 }

@@ -3,12 +3,19 @@ package com.locator_app.playground.bubblesample;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.Toast;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 public class BubbleView extends View {
 
@@ -46,7 +53,9 @@ public class BubbleView extends View {
         shadowPaint.setColor(0x77eeccee);
         shadowPaint.setMaskFilter(new BlurMaskFilter(8, BlurMaskFilter.Blur.NORMAL));
         this.shadowWidth = a.getInteger(R.styleable.BubbleView_shadowWidth, 0);
-        
+
+        bitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.progresscircle);
+
         virtualCenter = new Point();
     }
 
@@ -116,15 +125,36 @@ public class BubbleView extends View {
     }
 
     private void drawBitmap(Canvas canvas) {
-        if (bitmap == null) {
-            loadImage();
-        }
-        if (bitmap != null) {
-            canvas.drawBitmap(bitmap, 0, 0, circlePaint);
-        }
+        canvas.drawBitmap(bitmap, 0, 0, circlePaint);
     }
 
-    private void loadImage() {
-        
+    public void loadImage(String imageUri) {
+        if (!ImageLoader.getInstance().isInited()) {
+            ImageLoaderConfiguration configuration =
+                    new ImageLoaderConfiguration.Builder(getContext()).build();
+            ImageLoader.getInstance().init(configuration);
+        }
+        ImageLoader.getInstance().loadImage(imageUri, new ImageLoadingListener() {
+            @Override
+            public void onLoadingStarted(String imageUri, View view) {
+            }
+            @Override
+            public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+                final String errorMessage = "could not load image: " + imageUri;
+                Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                scaleRoundAndSetBitmap(loadedImage);
+            }
+            @Override
+            public void onLoadingCancelled(String imageUri, View view) {
+            }
+        });
+    }
+
+    private void scaleRoundAndSetBitmap(Bitmap bitmap) {
+        this.bitmap = bitmap;
+        invalidate();
     }
 }

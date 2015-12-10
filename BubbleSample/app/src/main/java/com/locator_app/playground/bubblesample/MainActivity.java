@@ -1,5 +1,8 @@
 package com.locator_app.playground.bubblesample;
 
+import android.content.ContentResolver;
+import android.content.Context;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -15,7 +18,10 @@ public class MainActivity extends AppCompatActivity {
 
         final BubbleView bubble = (BubbleView) findViewById(R.id.bubble);
 
-        //bubble.setRadius(100);
+        String imageUri = "https://i.vimeocdn.com/portrait/9856142_300x300.jpg";
+        bubble.loadImage(imageUri);
+
+        bubble.setRadius(100);
         bubble.moveTo(100, 100);
 
         bubble.setOnClickListener(new View.OnClickListener() {
@@ -34,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
 
                 Toast.makeText(getApplicationContext(), bubble.getCenter().toString(),
                         Toast.LENGTH_SHORT).show();
-
             }
         });
     }

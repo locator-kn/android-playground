@@ -36,4 +36,11 @@ public class GravityObject {
     void moveTo(int x, int y) {
         center.set(x, y);
     }
+
+    int distanceTo(GravityObject other) {
+        int xDelta = center.x - other.center.x;
+        int yDelta = center.y - other.center.y;
+        int distance = (int) Math.sqrt(xDelta * xDelta + yDelta * yDelta);
+        return distance;
+    }
 }

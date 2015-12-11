@@ -11,6 +11,6 @@ public class GravitySimulator {
     }
 
     public void simulateGravity(List<GravityObject> objects) {
-        
+
     }
 }

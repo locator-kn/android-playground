@@ -1,4 +1,4 @@
-package com.locator.playground.bubblesample;
+package com.locator_app.playground.bubblesample;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

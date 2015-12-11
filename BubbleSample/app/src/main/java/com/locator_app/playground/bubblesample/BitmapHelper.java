@@ -1,4 +1,4 @@
-package com.locator.playground.bubblesample;
+package com.locator_app.playground.bubblesample;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -7,6 +7,15 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
+
+/*
+    BitmapHelper offers helper functions to manipulate Bitmaps.
+    usage:
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.esschon);
+        bitmap = getRoundBitmap(bitmap, size);
+
+        canvas.drawBitmap(bitmap, 0, 0, Paint);
+ */
 
 public class BitmapHelper {
     public static Bitmap getRoundBitmap(Bitmap bitmap, int size) {

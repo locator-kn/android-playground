@@ -35,46 +35,6 @@ public class BubbleViewTest extends AndroidTestCase {
         assertEquals(300, bubble.getCenter().y);
     }
 
-    public void testMoveVirtual() throws Exception {
-        bubble.moveVirtual(0, 0);
-        assertEquals(0, bubble.getVirtualCenter().x);
-        assertEquals(0, bubble.getVirtualCenter().y);
-
-        bubble.moveVirtual(100, 100);
-        assertEquals(100, bubble.getVirtualCenter().x);
-        assertEquals(100, bubble.getVirtualCenter().y);
-
-        bubble.moveVirtual(300, 500);
-        assertEquals(300, bubble.getVirtualCenter().x);
-        assertEquals(500, bubble.getVirtualCenter().y);
-
-        bubble.moveVirtual(500, 300);
-        assertEquals(500, bubble.getVirtualCenter().x);
-        assertEquals(300, bubble.getVirtualCenter().y);
-    }
-
-    public void testMoveToVirtualCenter() throws Exception {
-        bubble.moveVirtual(0, 0);
-        bubble.moveToVirtualCenter();
-        assertEquals(0, bubble.getCenter().x);
-        assertEquals(0, bubble.getCenter().y);
-
-        bubble.moveVirtual(100, 100);
-        bubble.moveToVirtualCenter();
-        assertEquals(100, bubble.getCenter().x);
-        assertEquals(100, bubble.getCenter().y);
-
-        bubble.moveVirtual(300, 500);
-        bubble.moveToVirtualCenter();
-        assertEquals(300, bubble.getCenter().x);
-        assertEquals(500, bubble.getCenter().y);
-
-        bubble.moveVirtual(500, 300);
-        bubble.moveToVirtualCenter();
-        assertEquals(500, bubble.getCenter().x);
-        assertEquals(300, bubble.getCenter().y);
-    }
-
     public void testSetRadius() throws Exception {
 
         bubble.setShadowWidth(0);

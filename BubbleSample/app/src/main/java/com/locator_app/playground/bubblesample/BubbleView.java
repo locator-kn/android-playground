@@ -20,7 +20,6 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 public class BubbleView extends View {
 
-    private Point virtualCenter;
     private Paint painter;
 
     private int innerColor;
@@ -99,8 +98,6 @@ public class BubbleView extends View {
         setShadowColor(shadowColor);
         int shadowWidth = a.getInteger(R.styleable.BubbleView_shadowWidth, 0);
         setShadowWidth(shadowWidth);
-
-        virtualCenter = new Point();
     }
 
     public void moveTo(float x, float y) {
@@ -186,17 +183,5 @@ public class BubbleView extends View {
             public void onLoadingCancelled(String imageUri, View view) {
             }
         });
-    }
-
-    public void moveVirtual(int x, int y) {
-        virtualCenter.set(x, y);
-    }
-
-    public void moveToVirtualCenter() {
-        moveTo(virtualCenter.x, virtualCenter.y);
-    }
-
-    public Point getVirtualCenter() {
-        return virtualCenter;
     }
 }

@@ -1,4 +1,4 @@
-package com.locator_app.playground.bubblesample;
+package com.locator.playground.bubblesample;
 
 import org.junit.Test;
 

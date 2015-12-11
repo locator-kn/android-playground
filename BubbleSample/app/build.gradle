@@ -5,7 +5,7 @@ android {
     buildToolsVersion "23.0.2"
 
     defaultConfig {
-        applicationId "com.example.android.bubblesample"
+        applicationId "com.locator_app.playground.bubblesample"
         minSdkVersion 18
         targetSdkVersion 23
         versionCode 1

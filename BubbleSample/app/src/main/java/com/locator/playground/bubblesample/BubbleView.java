@@ -1,11 +1,15 @@
-package com.locator_app.playground.bubblesample;
+package com.locator.playground.bubblesample;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
+
+import static com.locator.playground.bubblesample.BitmapHelper.getRoundBitmap;
 
 public class BubbleView extends View {
 
@@ -71,27 +75,9 @@ public class BubbleView extends View {
         super.onDraw(canvas);
 
         canvas.drawCircle(getWidth() / 2, getHeight() / 2, radius, circlePaint);
-    }
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.esschon);
+        bitmap = getRoundBitmap(bitmap, getHeight());
 
-//    public static Bitmap getRoundedCornerBitmap(Bitmap bitmap, int pixels) {
-//        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap
-//                .getHeight(), Config.ARGB_8888);
-//        Canvas canvas = new Canvas(output);
-//
-//        final int color = 0xff424242;
-//        final Paint paint = new Paint();
-//        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-//        final RectF rectF = new RectF(rect);
-//        final float roundPx = pixels;
-//
-//        paint.setAntiAlias(true);
-//        canvas.drawARGB(0, 0, 0, 0);
-//        paint.setColor(color);
-//        canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
-//
-//        paint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));
-//        canvas.drawBitmap(bitmap, rect, rect, paint);
-//
-//        return output;
-//    }
+        canvas.drawBitmap(bitmap, 0, 0, circlePaint);
+    }
 }

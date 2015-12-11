@@ -1,46 +1,65 @@
 package com.locator_app.playground.bubblesample;
 
-import android.content.ContentResolver;
-import android.content.Context;
-import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
+import android.graphics.Color;
+import android.graphics.Point;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.view.Display;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
+    BubbleView schoenhier;
+    BubbleView userProfile;
+    RelativeLayout mainLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final BubbleView bubble = (BubbleView) findViewById(R.id.bubble);
+        mainLayout = (RelativeLayout) findViewById(R.id.mainLayout);
+        schoenhier = (BubbleView) findViewById(R.id.schoenhier);
+        userProfile = (BubbleView) findViewById(R.id.userProfile);
 
-        String imageUri = "https://i.vimeocdn.com/portrait/9856142_300x300.jpg";
-        bubble.loadImage(imageUri);
+        Display display = getWindowManager().getDefaultDisplay();
+        Point resolution = new Point();
+        display.getSize(resolution);
+        schoenhier.moveTo(resolution.x / 2 + 100, resolution.y / 2 - 200);
+        userProfile.moveTo(resolution.x / 2, (int)(resolution.y * 0.7));
 
-        bubble.setRadius(100);
-        bubble.moveTo(100, 100);
+        schoenhier.setOnClickListener(onSchoenhierClicked);
+        userProfile.setOnClickListener(onUserProfileClicked);
+    }
 
-        bubble.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+    private View.OnClickListener onSchoenhierClicked = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Toast.makeText(getApplicationContext(), "Schön hier!", Toast.LENGTH_SHORT).show();
+            schoenhier.moveTo(0, 0);
+        }
+    };
 
-                //BubbleView bubble = (BubbleView) v;
+    private View.OnClickListener onUserProfileClicked = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Toast.makeText(getApplicationContext(), "Updating profile", Toast.LENGTH_SHORT).show();
+            // addBubbleOnRuntime
+        }
+    };
 
-                int newX = bubble.getCenter().x + 100;
-                int newY = bubble.getCenter().y + 100;
-                bubble.moveTo(newX, newY);
-
-                //bubble.setRadius(20);
-                //bubble.moveTo(360, 511);
-                //bubble.moveVirtual(360, 511);
-
-                Toast.makeText(getApplicationContext(), bubble.getCenter().toString(),
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
+    private void addBubbleOnRuntime() {
+        BubbleView bubble = BubbleBuilder.on(getApplicationContext())
+                .image("drawable://" + R.drawable.locatorlogo)
+                .innerColor(Color.RED)
+                .innerRadius(70)
+                .borderColor(Color.BLACK)
+                .innerRadius(5)
+                .shadowWidth(20)
+                .position(100, 100)
+                .build();
+        mainLayout.addView(bubble);
     }
 }

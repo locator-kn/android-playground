@@ -6,11 +6,11 @@ import android.test.AndroidTestCase;
 public class BubbleViewTest extends AndroidTestCase {
 
     BubbleView bubble;
-    private final int DEFAULT_RADIUS = 100;
 
     public void setUp() throws Exception {
         super.setUp();
-        bubble = new BubbleView(getContext(), DEFAULT_RADIUS);
+        bubble = new BubbleView(getContext());
+        bubble.setInnerRadius(20);
     }
 
     public void tearDown() throws Exception {
@@ -77,18 +77,14 @@ public class BubbleViewTest extends AndroidTestCase {
 
     public void testSetRadius() throws Exception {
 
-        assertEquals(DEFAULT_RADIUS, bubble.getRadius());
+        bubble.setShadowWidth(0);
 
-        bubble.setRadius(10);
-        assertEquals(10, bubble.getRadius());
+        bubble.setInnerRadius(100);
+        bubble.setBorderWidth(10);
+        assertEquals(110, bubble.getRadius());
 
-        bubble.setRadius(100);
-        assertEquals(100, bubble.getRadius());
-
-        bubble.setRadius(300);
-        assertEquals(300, bubble.getRadius());
-
-        bubble.setRadius(500);
-        assertEquals(500, bubble.getRadius());
+        bubble.setInnerRadius(10);
+        bubble.setBorderWidth(100);
+        assertEquals(110, bubble.getRadius());
     }
 }

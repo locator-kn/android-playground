@@ -6,8 +6,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:icon="@drawable/locatorlogo"
+        android:logo="@drawable/locatorlogo"
+        android:label="Locator-BubbleSample"
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
         <activity android:name="com.locator_app.playground.bubblesample.MainActivity" >

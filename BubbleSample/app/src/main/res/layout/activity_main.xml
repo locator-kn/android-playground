@@ -12,9 +12,9 @@
         android:layout_width="200dp"
         android:layout_height="200dp"
         custum:innerRadius="120"
-        custum:innerColor="#FFFC7F"
+        custum:innerColor="#00000000"
         custum:borderWidth="10"
-        custum:borderColor="#00ff00"
+        custum:borderColor="#ffffffff"
         custum:shadowWidth="15"
         />
 
@@ -23,9 +23,9 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         custum:innerRadius="80"
-        custum:innerColor="#ffffff"
+        custum:innerColor="#00000000"
         custum:borderWidth="8"
-        custum:borderColor="#aaaaaa"
+        custum:borderColor="#ffffffff"
         custum:shadowWidth="8"
         />
 

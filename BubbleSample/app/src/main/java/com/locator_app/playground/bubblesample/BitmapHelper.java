@@ -14,7 +14,7 @@ import android.graphics.RectF;
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.esschon);
         bitmap = getRoundBitmap(bitmap, size);
 
-        canvas.drawBitmap(bitmap, 0, 0, Paint);
+        canvas.drawBitmap(bitmap, 0, 0, paint);
  */
 
 public class BitmapHelper {

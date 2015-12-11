@@ -36,8 +36,7 @@ public class BubbleView extends View {
 
     private Bitmap innerIcon;
     private void setInnerBitmap(Bitmap bitmap) {
-        // todo scale round ...
-        innerIcon = bitmap;
+        innerIcon = BitmapHelper.getRoundBitmap(bitmap, innerRadius * 2);
         invalidate();
     }
 
@@ -152,7 +151,8 @@ public class BubbleView extends View {
         painter.setStyle(Paint.Style.FILL);
         canvas.drawCircle(getWidth() / 2, getHeight() / 2, innerRadius, painter);
         if (innerIcon != null) {
-            canvas.drawBitmap(innerIcon, 0, 0, painter);
+            int distance = shadowWidth + borderWidth;
+            canvas.drawBitmap(innerIcon, distance, distance, painter);
         }
     }
 

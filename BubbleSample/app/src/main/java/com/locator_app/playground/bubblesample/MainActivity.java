@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -44,14 +45,15 @@ public class MainActivity extends AppCompatActivity {
         schoenhier.setOnClickListener(onSchoenhierClicked);
         userProfile.setOnClickListener(onUserProfileClicked);
 
-        bubbles = new HashMap<>();
+        bubbles = new LinkedHashMap<>();
         init();
     }
 
     View.OnClickListener onSchoenhierClicked = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            go();
+            Toast.makeText(getApplicationContext(), "Schön hier, wirklich!", Toast.LENGTH_SHORT)
+                    .show();
         }
     };
 
@@ -69,29 +71,32 @@ public class MainActivity extends AppCompatActivity {
         bubbles.get(userProfile).mass = 20;
 
         BubbleView b1 = BubbleBuilder.on(getApplicationContext())
+                .image("https://locator-app.com/api/v1/locations/90dd0bb7f23c628dddf94ba236df3c2f/supertrip.jpeg?size=mobileThumb")
                 .borderColor(color(R.color.borderBlue))
                 .innerColor(color(R.color.innerBlue))
-                .borderWidth(10)
+                .borderWidth(15)
                 .innerRadius(100)
                 .shadowWidth(10)
-                .position(100, 100)
+                .position(0, 0)
                 .build();
         mainLayout.addView(b1);
         bubbles.put(b1, toGravityObject(b1, false));
         BubbleView b2 = BubbleBuilder.on(getApplicationContext())
+                .image("https://locator-app.com/api/v1/locations/c3b201cd08854a70ba4366475a471e29/supertrip.jpeg?size=mobileThumb")
                 .borderColor(color(R.color.borderGreen))
                 .innerColor(color(R.color.innerGreen))
-                .borderWidth(10)
+                .borderWidth(15)
                 .innerRadius(50)
                 .shadowWidth(10)
-                .position(500, 50)
+                .position(0, 500)
                 .build();
         mainLayout.addView(b2);
         bubbles.put(b2, toGravityObject(b2, false));
         BubbleView b3 = BubbleBuilder.on(getApplicationContext())
+                .image("https://locator-app.com/api/v1/locations/bfa64cd3da5ce8b0e53be7b9f874016e/supertrip.jpeg?size=mobileThumb")
                 .borderColor(color(R.color.borderYellow))
                 .innerColor(color(R.color.innerYellow))
-                .borderWidth(10)
+                .borderWidth(15)
                 .innerRadius(100)
                 .shadowWidth(10)
                 .position(0, 300)
@@ -99,9 +104,10 @@ public class MainActivity extends AppCompatActivity {
         mainLayout.addView(b3);
         bubbles.put(b3, toGravityObject(b3, false));
         BubbleView b4 = BubbleBuilder.on(getApplicationContext())
+                .image("https://locator-app.com/api/v1/locations/fa2efc86b98058b64d3b3c19ff3bfe62/supertrip.jpeg?size=mobileThumb")
                 .borderColor(color(R.color.borderRed))
                 .innerColor(color(R.color.innerRed))
-                .borderWidth(10)
+                .borderWidth(15)
                 .innerRadius(75)
                 .shadowWidth(10)
                 .position(400, 300)
@@ -109,9 +115,10 @@ public class MainActivity extends AppCompatActivity {
         mainLayout.addView(b4);
         bubbles.put(b4, toGravityObject(b4, false));
         BubbleView b5 = BubbleBuilder.on(getApplicationContext())
+                .image("https://locator-app.com/api/v1/locations/d0140c9a6d3451658b63434cb9abee84/supertrip.jpeg?size=mobileThumb")
                 .borderColor(color(R.color.borderPurple))
                 .innerColor(color(R.color.innerPurple))
-                .borderWidth(10)
+                .borderWidth(15)
                 .innerRadius(75)
                 .shadowWidth(10)
                 .position(100, 500)
@@ -120,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
         bubbles.put(b5, toGravityObject(b5, false));
     }
 
-    private int color(int id) {
+    int color(int id) {
         return ContextCompat.getColor(getApplicationContext(), id);
     }
 
@@ -140,10 +147,11 @@ public class MainActivity extends AppCompatActivity {
             simulator = new GravitySimulator(1.0, w, h);
         }
 
+        final int TRESHOLD = 5;
         int i = 0;
         do {
             simulator.simulateGravity(bubbles.values(), 500);
-            if (i++ == 5)
+            if (++i == TRESHOLD)
                 break;
         } while (anyCollision());
         updateBubbles();
@@ -162,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
                 if (o1 == o2)
                     continue;
                 double distance = o1.distanceTo(o2);
-                if (distance < o1.radius + o2.radius)
+                if (distance < o1.radius + o2.radius + 10)
                     return true;
             }
         }

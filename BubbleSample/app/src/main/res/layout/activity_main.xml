@@ -13,8 +13,9 @@
         android:layout_height="200dp"
         custum:innerRadius="120"
         custum:innerColor="#00000000"
-        custum:borderWidth="10"
-        custum:borderColor="#ffffffff"
+        custum:borderWidth="20"
+        custum:borderColor="#00000000"
+        custum:shadowColor="#80000000"
         custum:shadowWidth="15"
         />
 

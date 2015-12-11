@@ -9,7 +9,7 @@
         <attr name="borderColor" format="color" />
 
         <attr name="shadowWidth" format="integer" />
-        <attr name="shadowColor" format="integer" />
+        <attr name="shadowColor" format="color" />
 
     </declare-styleable>
 </resources>

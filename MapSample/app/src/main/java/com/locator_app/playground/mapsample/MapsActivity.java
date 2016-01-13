@@ -7,6 +7,8 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -56,14 +58,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Add a marker in Sydney and move the camera
         Location location = gpsService.getGpsLocation();
         if (location == null) {
+            Toast.makeText(MapsApplication.getAppContext(), "No Location", Toast.LENGTH_SHORT).show();
             return;
         }
 
         LatLng locationPos = new LatLng(location.getLatitude(), location.getLongitude());
         //mMap.addMarker(new MarkerOptions().position(locationPos));
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(locationPos, 15));
-        //drawLocations();
-        //addHeatMap();
+        drawLocations();
+        addHeatMap();
     }
 
     public void drawLocations() {
@@ -139,12 +142,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         drawHeatMap(heatmapTileProvider);
     }
 
-    public void onClick() {
+    public void addHeatPointClicked(View v) {
         // Only for testing. heat points should not be added individually for memory reasons
         heatPoints.add(getRandomLatLng());
         heatmapTileProvider.setWeightedData(heatPoints);
         tileOverlay.clearTileCache();
         System.gc();
+    }
+
+    public void reloadClicked(View v) {
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+
+        mapFragment.getMapAsync(this);
     }
 
     public void drawHeatMap(HeatmapTileProvider mProvider) {

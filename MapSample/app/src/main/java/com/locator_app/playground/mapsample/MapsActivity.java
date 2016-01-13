@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Location;
+import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
@@ -20,36 +21,30 @@ import com.google.maps.android.heatmaps.Gradient;
 import com.google.maps.android.heatmaps.HeatmapTileProvider;
 import com.google.maps.android.heatmaps.WeightedLatLng;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Background;
-import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.UiThread;
-
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
 import static com.locator_app.playground.mapsample.BitmapHelper.getRoundBitmap;
 
-@EActivity(R.layout.activity_maps)
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
     private final static String LOGTAG = "Development";
 
     private GoogleMap googleMap;
+    private GpsService gpsService;
+    private Bitmap currentPos;
 
-    @Bean
-    GpsService gpsService;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_maps);
 
-    @AfterViews
-    void initMapFragment() {
-        Log.d(LOGTAG, "initMapFragment: called");
+
+        gpsService = new GpsService();
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
 
-        System.gc();
-        mapFragment.getMap().clear();
         mapFragment.getMapAsync(this);
     }
 
@@ -60,15 +55,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Add a marker in Sydney and move the camera
         Location location = gpsService.getGpsLocation();
+        if (location == null) {
+            return;
+        }
 
         LatLng locationPos = new LatLng(location.getLatitude(), location.getLongitude());
         //mMap.addMarker(new MarkerOptions().position(locationPos));
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(locationPos, 15));
         //drawLocations();
-        addHeatMap();
+        //addHeatMap();
     }
 
-    @Background
     public void drawLocations() {
         Log.d(LOGTAG, "drawLocations: called");
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.location);
@@ -81,7 +78,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         drawLocation(locationPos, bitmap);
     }
 
-    @UiThread
     public void drawLocation(LatLng latLong, Bitmap bitmap) {
         Log.d(LOGTAG, "drawLocation: called");
         googleMap.addMarker(new MarkerOptions()
@@ -94,7 +90,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private TileOverlay tileOverlay;
     private List<WeightedLatLng> heatPoints;
 
-    @Background
     public void addHeatMap() {
         heatPoints = new LinkedList<>();
         for (int i = 0; i < 10; ++i) {
@@ -144,7 +139,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         drawHeatMap(heatmapTileProvider);
     }
 
-    @Click(R.id.addHeatPointButton)
     public void onClick() {
         // Only for testing. heat points should not be added individually for memory reasons
         heatPoints.add(getRandomLatLng());
@@ -153,7 +147,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         System.gc();
     }
 
-    @UiThread
     public void drawHeatMap(HeatmapTileProvider mProvider) {
         System.gc();
         tileOverlay = googleMap.addTileOverlay(new TileOverlayOptions().tileProvider(mProvider));
@@ -175,12 +168,5 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         double intensity = r.nextDouble();
 
         return new WeightedLatLng(new LatLng(lat, lng), intensity);
-    }
-    @Override
-    public void onStop() {
-        Log.d(LOGTAG, "onStop: called");
-        super.onStop();
-        heatPoints.clear();
-        googleMap.clear();
     }
 }
